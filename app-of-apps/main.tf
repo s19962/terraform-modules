@@ -19,8 +19,8 @@ resource "argocd_application" "app_of_apps" {
   spec {
     project = var.argocd_project
     source {
-      repo_url  = var.app_of_apps.repo_url //"https://github.com/banzaicloud/logging-operator.git"
-      path = var.app_of_apps.path
+      repo_url        = var.app_of_apps.repo_url //"https://github.com/banzaicloud/logging-operator.git"
+      path            = var.app_of_apps.path
       target_revision = var.app_of_apps.target_revision
     }
 
@@ -30,7 +30,7 @@ resource "argocd_application" "app_of_apps" {
     }
 
     sync_policy {
-      automated = {
+      automated {
         prune       = true
         self_heal   = true
         allow_empty = true
@@ -38,8 +38,8 @@ resource "argocd_application" "app_of_apps" {
 
       sync_options = ["Validate=false", "createCustomResource=false"]
       retry {
-        limit   = "5"
-        backoff = {
+        limit = "5"
+        backoff {
           duration     = "30s"
           max_duration = "2m"
           factor       = "2"
