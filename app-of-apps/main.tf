@@ -1,0 +1,51 @@
+# Public Git repository
+resource "argocd_repository" "deployment_repository" {
+  repo = var.deployment_repo.url//"git@github.com:user/somerepo.git"
+  project = var.deployment_repo.project//"git@github.com:user/somerepo.git"
+}
+
+
+
+resource "argocd_application" "app_of_apps" {
+  metadata {
+    name      = "applications"
+    namespace = var.application_namespace
+    labels    = var.labels
+  }
+  wait = true
+  timeouts {
+    create = "20m"
+    delete = "10m"
+  }
+  spec {
+    project = var.argocd_project
+    source {
+      repo_url  = var.deployment_repo.url //"https://github.com/banzaicloud/logging-operator.git"
+      repo_path = "apps"
+    }
+    destination {
+      server    = var.destination_server
+      namespace = var.destination_namespace
+    }
+    sync_policy {
+      automated = {
+        prune       = true
+        self_heal   = true
+        allow_empty = true
+      }
+
+      sync_options = ["Validate=false", "createCustomResource=false"]
+      retry {
+        limit   = "5"
+        backoff = {
+          duration     = "30s"
+          max_duration = "2m"
+          factor       = "2"
+        }
+      }
+    }
+  }
+  lifecycle {
+    ignore_changes = [metadata]
+  }
+}
