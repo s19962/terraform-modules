@@ -1,6 +1,6 @@
 # Public Git repository
 resource "argocd_repository" "deployment_repository" {
-  repo    = var.app_of_apps_repo_url//"git@github.com:user/somerepo.git"
+  repo    = var.app_of_apps.repo_url//"git@github.com:user/somerepo.git"
   project = var.argocd_project//"git@github.com:user/somerepo.git"
 }
 
@@ -23,10 +23,12 @@ resource "argocd_application" "app_of_apps" {
       path = var.app_of_apps.path
       target_revision = var.app_of_apps.target_revision
     }
+
     destination {
       server    = var.destination_server
       namespace = var.destination_namespace
     }
+
     sync_policy {
       automated = {
         prune       = true
