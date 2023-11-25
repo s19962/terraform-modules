@@ -19,8 +19,9 @@ resource "argocd_application" "app_of_apps" {
   spec {
     project = var.argocd_project
     source {
-      repo_url  = var.app_of_apps_repo_url //"https://github.com/banzaicloud/logging-operator.git"
-      repo_path = "apps"
+      repo_url  = var.app_of_apps.repo_url //"https://github.com/banzaicloud/logging-operator.git"
+      path = var.app_of_apps.path
+      target_revision = var.app_of_apps.target_revision
     }
     destination {
       server    = var.destination_server

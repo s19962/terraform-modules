@@ -22,6 +22,10 @@ variable "argocd_project" {
   default = "default"
 }
 
-variable "app_of_apps_repo_url" {
-  type = string
+variable "app_of_apps" {
+  type = object({
+    repo_url        = string
+    path            = string
+    target_revision = string
+  })
 }
