@@ -50,4 +50,6 @@ resource "argocd_application" "app_of_apps" {
   lifecycle {
     ignore_changes = [metadata]
   }
+
+  depends_on = [argocd_repository.deployment_repository]
 }
