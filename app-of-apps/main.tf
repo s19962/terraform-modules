@@ -1,9 +1,8 @@
 # Public Git repository
 resource "argocd_repository" "deployment_repository" {
-  repo = var.deployment_repo.url//"git@github.com:user/somerepo.git"
-  project = var.deployment_repo.project//"git@github.com:user/somerepo.git"
+  repo    = var.app_of_apps_repo_url//"git@github.com:user/somerepo.git"
+  project = var.argocd_project//"git@github.com:user/somerepo.git"
 }
-
 
 
 resource "argocd_application" "app_of_apps" {
@@ -20,7 +19,7 @@ resource "argocd_application" "app_of_apps" {
   spec {
     project = var.argocd_project
     source {
-      repo_url  = var.deployment_repo.url //"https://github.com/banzaicloud/logging-operator.git"
+      repo_url  = var.app_of_apps_repo_url //"https://github.com/banzaicloud/logging-operator.git"
       repo_path = "apps"
     }
     destination {
